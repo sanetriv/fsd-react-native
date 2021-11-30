@@ -52,11 +52,17 @@ const AppBar = () => {
           </Link>
         </Pressable>
         {!auth ? 
+          <>
           <Pressable style={styles.flexItem}>
             <Link to='/signin'>
               <Text fontWeight='bold' fontSize='subheading' color='white'>Sign in</Text>
             </Link>
-          </Pressable> :
+          </Pressable>
+          <Pressable style={styles.flexItem}>
+            <Link to='/signup'>
+              <Text fontWeight='bold' fontSize='subheading' color='white'>Sign up</Text>
+            </Link>
+          </Pressable></> :
           <>
           <Pressable style={styles.flexItem}>
             <Link to='/createreview'>

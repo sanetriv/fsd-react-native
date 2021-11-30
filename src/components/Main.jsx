@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import AppBar from './AppBar';
-import RepositoryList from './RepositoryList';
 import { Route, Switch, Redirect } from 'react-router-native';
 import SignIn from './SignIn';
 import SingleRepo from './SingleRepo';
 import CreateReview from './CreateReview';
+import SignUp from './SignUp';
+import RepoListBuilder from './RepoListBuilder';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,11 +27,14 @@ const Main = () => {
         <Route path="/signin" exact>
             <SignIn />
         </Route>
+        <Route path="/signup" exact>
+            <SignUp />
+        </Route>
         <Route path="/:id" exact>
             <SingleRepo />
         </Route>
         <Route path="/" exact>
-            <RepositoryList />
+            <RepoListBuilder />
         </Route>
         <Redirect to="/" />
       </Switch>

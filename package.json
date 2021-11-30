@@ -26,6 +26,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.5",
     "@react-native-async-storage/async-storage": "~1.15.0",
+    "@react-native-picker/picker": "1.16.1",
     "date-fns": "^2.26.0",
     "dotenv": "^10.0.0",
     "expo": "~42.0.1",
@@ -36,8 +37,10 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-paper": "^4.10.1",
     "react-native-web": "~0.13.12",
     "react-router-native": "^5.2.1",
+    "use-debounce": "^7.0.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
