@@ -29,16 +29,36 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const AUTHORIZED_USER = gql`
-  query {
+  query getAuthorizedUser($includeReviews: Boolean = false, $first: Int, $after: String){
     authorizedUser {
       id
       username
+      reviews (first: $first, after: $after) @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            repositoryId
+            repository {
+              fullName
+            }
+          }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+        }
+      }
     }
   }
 `;
 
 export const REPOSITORY = gql`
-  query getOneRepo($id: ID!){
+  query getOneRepo($id: ID!, $first: Int, $after: String){
     repository(id: $id) {
       ratingAverage
       stargazersCount
@@ -50,18 +70,26 @@ export const REPOSITORY = gql`
       reviewCount
       id
       url
-      reviews {
+      reviews (first: $first, after: $after){
+        totalCount
         edges {
           node {
             id
             text
             rating
             createdAt
+            repositoryId
             user {
               id
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
         }
       }
     }

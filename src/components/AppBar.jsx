@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignContent: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    paddingBottom: 10
   },
   scroll: {
     flexDirection:'row',
@@ -67,6 +68,11 @@ const AppBar = () => {
           <Pressable style={styles.flexItem}>
             <Link to='/createreview'>
               <Text fontWeight='bold' fontSize='subheading' color='white'>Create Review</Text>
+            </Link>
+          </Pressable>
+          <Pressable style={styles.flexItem}>
+            <Link to='/myreviews'>
+              <Text fontWeight='bold' fontSize='subheading' color='white'>My Reviews</Text>
             </Link>
           </Pressable>
           <Pressable style={styles.flexItem} onPress={signOut}>

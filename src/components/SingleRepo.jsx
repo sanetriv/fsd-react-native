@@ -1,9 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import React from "react";
 import { FlatList, Linking, StyleSheet, View } from "react-native";
 import { useParams } from "react-router";
-import { REPOSITORY } from "../graphql/queries";
+import useRepository from "../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
 import Text from "./Text";
 
@@ -49,16 +48,12 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const SingleRepo = () => {
   const { id } = useParams();
-  const result = useQuery(REPOSITORY, {
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id: id.startsWith(':') ? id.substring(1) : id
-    }
-  });
+  const { data, loading, fetchMore } = useRepository(id);
   const goToGithub = () => {
-    Linking.openURL(result.data.repository.url);
+    Linking.openURL(data.repository.url);
   };
-  if (result.loading){
+
+  if (!data) {
     return <Text>Loading...</Text>;
   }
 
@@ -83,9 +78,13 @@ const SingleRepo = () => {
     );
   };
 
-  const reviews = result.data.repository.reviews
-    ? result.data.repository.reviews.edges.map(edge => edge.node)
+  const reviews = data.repository.reviews
+    ? data.repository.reviews.edges.map(edge => edge.node)
     : [];
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <>
@@ -94,7 +93,9 @@ const SingleRepo = () => {
         renderItem={({ item }) => <ReviewItem review={item} />}
         keyExtractor={({ id }) => id}
         ItemSeparatorComponent={ItemSeparator}
-        ListHeaderComponent={() => <RepositoryItem item={result.data.repository} single={true} linkToGithub={goToGithub} />}
+        ListHeaderComponent={() => <RepositoryItem item={data.repository} single={true} linkToGithub={goToGithub} />}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     </>
   );

@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { useDebouncedCallback } from "use-debounce/lib";
 import useRepositories from "../hooks/useRepositories";
 import { RepositoryListClass } from "./RepositoryList";
+import Text from "./Text";
 
 const RepoListBuilder = () => {
   const [selectedOrder, setSelectedOrder] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const { repositories, fetchMore } = useRepositories(
+  const { data, loading, fetchMore } = useRepositories(
     {
-      
       order: selectedOrder,
       search: searchQuery,
       first: 6
     }
   );
+
+  if (!data) {
+    return <Text>Loading...</Text>;
+  }
 
   const debounceOrder = useDebouncedCallback(
     (value) => {
@@ -32,30 +36,29 @@ const RepoListBuilder = () => {
   const onChange = (value) => {
     debounceSearch.cancel();
     debounceSearch(value);
+    //setSearchQuery(value);
   };
 
 
   const onOrderChange = (value) => {
     debounceOrder.cancel();
     debounceOrder(value);
-    //const params = getRefetchParams(selectedOrder, searchQuery);
-    //refetch(params);
+    //setSelectedOrder(value);
   };
 
   const onEndReach = () => {
-    console.log('END REACHED');
     fetchMore();
   };
 
   return(
     <RepositoryListClass
       onChange={onChange}
-      repositories={repositories}
+      repositories={data.repositories}
       search={searchQuery}
       order={selectedOrder}
       onOrderChange={onOrderChange}
       onEndReach={onEndReach}
-      />
+    />
   );
 };
 
